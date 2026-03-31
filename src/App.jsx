@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import CardPreview from './components/CardPreview'
 import CardEditor from './components/CardEditor'
 import { getDisplaySize, getExportSize, hexToRgba } from './constants'
@@ -15,12 +15,30 @@ const DEFAULT_SETTINGS = {
   cropY: 50,
 }
 
+const STORAGE_KEY = 'jay-photo-card-settings'
+const PERSIST_KEYS = ['fontSize', 'textPosition', 'textColor', 'bgColor', 'bgOpacity', 'sizePreset']
+
+function loadSettings() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (!saved) return DEFAULT_SETTINGS
+    const parsed = JSON.parse(saved)
+    return { ...DEFAULT_SETTINGS, ...parsed }
+  } catch {
+    return DEFAULT_SETTINGS
+  }
+}
 
 export default function App() {
   const [image, setImage] = useState(null)
   const [word, setWord] = useState('')
-  const [settings, setSettings] = useState(DEFAULT_SETTINGS)
+  const [settings, setSettings] = useState(loadSettings)
   const [exporting, setExporting] = useState(false)
+
+  useEffect(() => {
+    const toSave = Object.fromEntries(PERSIST_KEYS.map(k => [k, settings[k]]))
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave))
+  }, PERSIST_KEYS.map(k => settings[k])) // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleImageChange(img) {
     setImage(img)
@@ -119,7 +137,7 @@ export default function App() {
   return (
     <div className={styles.app}>
       <header className={styles.header}>
-        <h1 className={styles.title}>🃏 낱말 카드 생성기</h1>
+        <h1 className={styles.title}>🃏 준규의 낱말 카드 생성기</h1>
         <p className={styles.subtitle}>이미지를 업로드하고 단어를 입력하여 낱말 카드를 만들어보세요</p>
       </header>
 

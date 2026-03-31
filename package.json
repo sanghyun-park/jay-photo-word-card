@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "vite build && gh-pages -d dist"
+    "deploy": "vite build && gh-pages --cname word-card.ddongbbang.com -d dist"
   },
   "homepage": "https://word-card.ddongbbang.com",
   "dependencies": {
