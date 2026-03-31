@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "deploy": "vite build && gh-pages -d dist"
   },
-  "homepage": "https://sanghyun-park.github.io/jay-photo-word-card",
+  "homepage": "https://word-card.ddongbbang.com",
   "dependencies": {
     "html2canvas": "^1.4.1",
     "react": "^18.3.1",
